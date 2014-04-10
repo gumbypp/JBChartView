@@ -26,9 +26,9 @@ CGFloat const kJBChartTooltipViewDefaultHeight = 25.0f;
 
 #pragma mark - Alloc/Init
 
-- (id)init
+- (id)initWithFrame:(CGRect)frame
 {
-    self = [super initWithFrame:CGRectMake(0, 0, kJBChartTooltipViewDefaultWidth, kJBChartTooltipViewDefaultHeight)];
+    self = [super initWithFrame:frame];
     if (self)
     {
         self.backgroundColor = kJBColorTooltipColor;
@@ -46,11 +46,28 @@ CGFloat const kJBChartTooltipViewDefaultHeight = 25.0f;
     return self;
 }
 
+- (id)init
+{
+    return [self initWithFrame:CGRectMake(0, 0, kJBChartTooltipViewDefaultWidth, kJBChartTooltipViewDefaultHeight)];
+}
+
 #pragma mark - Setters
+
+- (void)setNumberOfLines:(NSInteger)numberOfLines
+{
+    self.textLabel.numberOfLines = numberOfLines;
+    [self setNeedsLayout];
+}
 
 - (void)setText:(NSString *)text
 {
     self.textLabel.text = text;
+    [self setNeedsLayout];
+}
+
+- (void)setAttributedText:(NSAttributedString *)attributedText
+{
+    self.textLabel.attributedText = attributedText;
     [self setNeedsLayout];
 }
 

@@ -10,6 +10,8 @@
 
 @interface JBChartTooltipView : UIView
 
+- (void)setNumberOfLines:(NSInteger)numberOfLines;
 - (void)setText:(NSString *)text;
+- (void)setAttributedText:(NSAttributedString *)attributedText;
 
 @end
