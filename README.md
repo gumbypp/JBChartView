@@ -38,7 +38,7 @@ Simply add the following line to your <code>Podfile</code>:
 Your Podfile should look something like:
 
 	platform :ios, '7.0'
-	pod 'JBChartView', '~> 2.1.4'
+	pod 'JBChartView', '~> 2.4.2'
 	
 ### The Old School Way
 
@@ -181,11 +181,16 @@ The color, width and style of each line in the chart can be customized via the <
 		return ...; // style of line in chart
 	}
 	
-Furthermore, the color of the selection bar and line can be customized via the <i>optional</i> protocols:
+Furthermore, the color and width of the selection view along with the color of the selected line can be customized via the <i>optional</i> protocols:
 
 	- (UIColor *)verticalSelectionColorForLineChartView:(JBLineChartView *)lineChartView
 	{
 		return ...; // color of selection view
+	}
+	
+	- (CGFloat)verticalSelectionWidthForLineChartView:(JBLineChartView *)lineChartView
+	{
+		return ...; // width of selection view
 	}
 	
 	- (UIColor *)lineChartView:(JBLineChartView *)lineChartView selectionColorForLineAtLineIndex:(NSUInteger)lineIndex
@@ -197,11 +202,17 @@ By default, each line will not show dots for each point. To enable this on a per
 
 	- (BOOL)lineChartView:(JBLineChartView *)lineChartView showsDotsForLineAtLineIndex:(NSUInteger)lineIndex;
 
-To customize the size of each dot, implement (default is 3x the line width):
+To customize the size of each dot (default 3x the line width), implement:
 
-	- (BOOL)lineChartView:(JBLineChartView *)lineChartView showsDotsForLineAtLineIndex:(NSUInteger)lineIndex;
+	- (CGFloat)lineChartView:(JBLineChartView *)lineChartView dotRadiusForLineAtLineIndex:(NSUInteger)lineIndex;
 	
-As well, by default, each line will have squared off end caps and connection points. To enable line smoothing:
+To customize the color of each dot during selection and non-selection events (default is white and black respectively), implement:
+
+	- (UIColor *)lineChartView:(JBLineChartView *)lineChartView colorForDotAtHorizontalIndex:(NSUInteger)horizontalIndex atLineIndex:(NSUInteger)lineIndex;	
+
+	- (UIColor *)lineChartView:(JBLineChartView *)lineChartView selectionColorForDotAtHorizontalIndex:(NSUInteger)horizontalIndex atLineIndex:(NSUInteger)lineIndex;
+	
+As well, by default, each line will have squared off end caps and connection points. To enable rounded connections and end caps:
 
 	- (BOOL)lineChartView:(JBLineChartView *)lineChartView smoothLineAtLineIndex:(NSUInteger)lineIndex;
 		

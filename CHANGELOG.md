@@ -1,5 +1,33 @@
 # Changelog
 
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.4.2">2.4.2</a> 
+#### 04/30/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/pull/46">#46</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.4.1">2.4.1</a> 
+#### 04/30/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/pull/45">#45</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.4.0">2.4.0</a> 
+#### 04/28/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/pull/23">#23</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.3.0">2.3.0</a> 
+#### 04/17/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/pull/34">#34</a>.
+ 
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.2.0">2.2.0</a> 
+#### 04/14/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/pull/37">#37</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.1.6">2.1.6</a> 
+#### 04/11/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/pull/33">#33</a>.
+ 
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.1.5">2.1.5</a> 
+#### 04/10/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/pull/30">#30</a>.
+
 ## <a href="https://github.com/Jawbone/JBChartView/tree/v2.1.4">2.1.4</a> 
 #### 04/10/14
 - Added ability to specify a radius for dotted lines. 
