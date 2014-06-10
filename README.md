@@ -38,7 +38,7 @@ Simply add the following line to your <code>Podfile</code>:
 Your Podfile should look something like:
 
 	platform :ios, '7.0'
-	pod 'JBChartView', '~> 2.4.2'
+	pod 'JBChartView', '~> 2.5.5'
 	
 ### The Old School Way
 
@@ -63,14 +63,14 @@ To initialize a <i>JBBarChartView</i>, you only need a few lines of code (see be
     
 At a minimum, you need to inform the data source how many bars are in the chart:
 
-	- (NSInteger)numberOfBarsInBarChartView:(JBBarChartView *)barChartView
+	- (NSUInteger)numberOfBarsInBarChartView:(JBBarChartView *)barChartView
 	{
 		return ...; // number of bars in chart
 	}
 
 Secondly, you need to inform the delegate the height of each bar (automatically normalized across the entire chart):
     
-    - (CGFloat)barChartView:(JBBarChartView *)barChartView heightForBarViewAtAtIndex:(NSInteger)index
+    - (CGFloat)barChartView:(JBBarChartView *)barChartView heightForBarViewAtAtIndex:(NSUInteger)index
     {
 		return ...; // height of bar at index
 	}
@@ -140,6 +140,10 @@ By default, a chart's bars will be black and flat. They can be customized by sup
 	{
 		return ...; // color of line in chart
 	}
+	
+If you don't require a custom UIView, simply supply a color for the bar instead:
+
+	- (UIColor *)barChartView:(JBBarChartView *)barChartView colorForBarViewAtIndex:(NSUInteger)index;
 
 Furthermore, the color of the selection bar (on touch events) can be customized via the <i>optional</i> protocol:
 
@@ -229,6 +233,21 @@ Lastly, a line chart's selection events are delegated back via:
 	}
 	
 The <b>touchPoint</b> is especially important as it allows you to add custom elements to your chart during  selection events. Refer to the demo project (<b>JBLineChartViewController</b>) to see how a tooltip can be used to display additional information during selection events.
+
+## Minimum & Maximum Values
+
+By default, a chart's minimum and maximum values are equal to the min and max supplied by the dataSource. You can override either value via:
+
+	- (void)setMinimumValue:(CGFloat)minimumValue;
+	- (void)setMaximumValue:(CGFloat)maximumValue;
+
+If value(s) are supplied, they must be >= 0, otherwise an assertion will be thrown. To reset the values back to their original defaults:
+
+	- (void)resetMinimumValue;
+	- (void)resetMaximumValue;
+	
+The min/max values are clamped to the ceiling and floor of the actual min/max values of the chart's data source; for example, if a maximumValue of 20 is supplied & the chart's actual max is 100, then 100 will be used. For min/max modifications to take effect, reloadData must be called.
+
 	
 ## License
 

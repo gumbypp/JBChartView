@@ -18,6 +18,13 @@ NSInteger static const kJBBarChartViewUndefinedBarIndex = -1;
 // Colors (JBChartView)
 static UIColor *kJBBarChartViewDefaultBarColor = nil;
 
+@interface JBChartView (Private)
+
+- (BOOL)hasMaximumValue;
+- (BOOL)hasMinimumValue;
+
+@end
+
 @interface JBBarChartView ()
 
 @property (nonatomic, strong) NSDictionary *chartDataDictionary; // key = column, value = height
@@ -34,8 +41,6 @@ static UIColor *kJBBarChartViewDefaultBarColor = nil;
 // View quick accessors
 - (CGFloat)availableHeight;
 - (CGFloat)normalizedHeightForRawHeight:(NSNumber*)rawHeight;
-- (CGFloat)minHeight;
-- (CGFloat)maxHeight;
 - (CGFloat)barWidth;
 - (CGFloat)popOffset;
 
@@ -176,11 +181,24 @@ static UIColor *kJBBarChartViewDefaultBarColor = nil;
             else
             {
                 barView = [[UIView alloc] init];
-                barView.backgroundColor = kJBBarChartViewDefaultBarColor;
+                UIColor *backgroundColor = nil;
+
+                if ([self.dataSource respondsToSelector:@selector(barChartView:colorForBarViewAtIndex:)])
+                {
+                    backgroundColor = [self.dataSource barChartView:self colorForBarViewAtIndex:index];
+                    NSAssert(backgroundColor != nil, @"JBBarChartView // datasource function - (UIColor *)barChartView:(JBBarChartView *)barChartView colorForBarViewAtIndex:(NSUInteger)index must return a non-nil UIColor");
+                }
+                else
+                {
+                    backgroundColor = kJBBarChartViewDefaultBarColor;
+                }
+
+                barView.backgroundColor = backgroundColor;
             }
+
             CGFloat height = [self normalizedHeightForRawHeight:[self.chartDataDictionary objectForKey:key]];
             CGFloat extensionHeight = height > 0.0 ? kJBBarChartViewPopOffset : 0.0;
-            barView.frame = CGRectMake(xOffset, self.bounds.size.height - height - self.footerView.frame.size.height + self.headerPadding, [self barWidth], height + extensionHeight - self.headerPadding);
+            barView.frame = CGRectMake(xOffset, self.bounds.size.height - height - self.footerView.frame.size.height, [self barWidth], height + extensionHeight);
             [mutableBarViews addObject:barView];
 			
             // Add new bar
@@ -252,8 +270,8 @@ static UIColor *kJBBarChartViewDefaultBarColor = nil;
 
 - (CGFloat)normalizedHeightForRawHeight:(NSNumber*)rawHeight
 {
-    CGFloat minHeight = [self minHeight];
-    CGFloat maxHeight = [self maxHeight];
+    CGFloat minHeight = [self minimumValue];
+    CGFloat maxHeight = [self maximumValue];
     CGFloat value = [rawHeight floatValue];
     
     if ((maxHeight - minHeight) <= 0)
@@ -262,24 +280,6 @@ static UIColor *kJBBarChartViewDefaultBarColor = nil;
     }
     
     return ((value - minHeight) / (maxHeight - minHeight)) * [self availableHeight];
-}
-
-- (CGFloat)minHeight
-{
-    if (self.mininumValue != kJBChartViewUndefinedMinimumValue)
-    {
-        return MIN(self.mininumValue, self.cachedMinHeight);
-    }
-    return self.cachedMinHeight;
-}
-
-- (CGFloat)maxHeight
-{
-    if (self.maximumValue != kJBChartViewUndefinedMaximumValue)
-    {
-        return MAX(self.maximumValue, self.cachedMaxHeight);
-    }
-    return self.cachedMaxHeight;
 }
 
 - (CGFloat)barWidth
@@ -380,8 +380,7 @@ static UIColor *kJBBarChartViewDefaultBarColor = nil;
 {
     if(_cachedMinHeight == kJBBarChartViewUndefinedCachedHeight)
     {
-        // min height is min value across all goals and values
-        NSArray *chartValues = [[[self.chartDataDictionary allValues] arrayByAddingObjectsFromArray:[self.chartDataDictionary allValues]] sortedArrayUsingSelector:@selector(compare:)];
+        NSArray *chartValues = [[NSMutableArray arrayWithArray:[self.chartDataDictionary allValues]] sortedArrayUsingSelector:@selector(compare:)];
         _cachedMinHeight =  [[chartValues firstObject] floatValue];
     }
     return _cachedMinHeight;
@@ -391,29 +390,28 @@ static UIColor *kJBBarChartViewDefaultBarColor = nil;
 {
     if (_cachedMaxHeight == kJBBarChartViewUndefinedCachedHeight)
     {
-        // max height is max value across all goals and values
-        NSArray *chartValues = [[[self.chartDataDictionary allValues] arrayByAddingObjectsFromArray:[self.chartDataDictionary allValues]] sortedArrayUsingSelector:@selector(compare:)];
+        NSArray *chartValues = [[NSMutableArray arrayWithArray:[self.chartDataDictionary allValues]] sortedArrayUsingSelector:@selector(compare:)];
         _cachedMaxHeight =  [[chartValues lastObject] floatValue];
     }
     return _cachedMaxHeight;
 }
 
-- (CGFloat)mininumValue
+- (CGFloat)minimumValue
 {
-    if ([super mininumValue] == kJBChartViewUndefinedMinimumValue)
+    if ([self hasMinimumValue])
     {
-        return self.cachedMinHeight;
+        return fminf(self.cachedMinHeight, [super minimumValue]);
     }
-    return [super mininumValue];
+    return self.cachedMinHeight;
 }
 
 - (CGFloat)maximumValue
 {
-    if ([super maximumValue] == kJBChartViewUndefinedMaximumValue)
+    if ([self hasMaximumValue])
     {
-        return self.cachedMaxHeight;
+        return fmaxf(self.cachedMaxHeight, [super maximumValue]);
     }
-    return [super maximumValue];
+    return self.cachedMaxHeight;    
 }
 
 #pragma mark - Touch Helpers
