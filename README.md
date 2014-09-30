@@ -1,7 +1,7 @@
 # JBChartView
 <br/>
 <p align="center">	
-	<img src="https://raw.github.com/Jawbone/JBChartView/master/Screenshots/main.png">
+	<img src="https://raw.github.com/Jawbone/JBChartView/master/Screenshots/main.jpg">
 </p>
 
 Introducing <b>JBChartView - </b> Jawbone's iOS-based charting library for both line and bar graphs. It is easy to set-up, and highly customizable. 
@@ -18,12 +18,17 @@ Refer to the <a href="https://github.com/Jawbone/JBChartView/blob/master/CHANGEL
 
 ## Requirements
 
-- Requires iOS 7 or later
+- Requires iOS 6 or later
 - Requires Automatic Reference Counting (ARC)
 
-## Demo
+## Demo Project
 
 Build and run the <i>JBChartViewDemo</i> project in Xcode. The demo demonstrates the use of both the line and bar charts. It also outlines how a chart's appearance can be customized. 
+
+## More Demos
+
+- <a href="https://github.com/Jawbone/anscombe-quartet-ios">Amsombe's Quartet</a>: project showcasing the use of JBChartView in the classic data visualization example known as Anscombe's Quartet.
+- <a href="https://github.com/Jawbone/spark-friends-ios">Spark Friends</a>: project showcasing the use of JBChartView in the context of sparklines and (fake) user step data. 
 
 ## Installation
 
@@ -37,8 +42,8 @@ Simply add the following line to your <code>Podfile</code>:
 	
 Your Podfile should look something like:
 
-	platform :ios, '7.0'
-	pod 'JBChartView', '~> 2.5.5'
+	platform :ios, '6.0'
+	pod 'JBChartView', '~> 2.8.9'
 	
 ### The Old School Way
 
@@ -52,13 +57,24 @@ The simpliest way to use JBChartView with your application is to drag and drop t
 
 All JBChartView implementations have a similiar data source and delgate pattern to <i>UITableView</i>. If you're familiar with using a <i>UITableView</i> or <i>UITableViewController</i>, using a JBChartView subclass should be a breeze!
 
+#### Swift Projects
+
+To use JBCartView in a Swift project add the following to your bridging header (JBChartView-Bridging-Header.h):
+
+	#import <UIKit/UIKit.h>
+	#import "JBChartView/JBChartView.h"
+	#import "JBChartView/JBBarChartView.h"
+	#import "JBChartView/JBLineChartView.h"
+
+For more information about adding bridging headers see <a href="https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html" target="_blank">Swift and Objective-C in the Same Project</a>.
+
 #### JBBarChartView
 
 To initialize a <i>JBBarChartView</i>, you only need a few lines of code (see below). Bar charts can also be initialized via a <b>nib</b> or with a <b>frame</b>.
 
 	JBBarChartView *barChartView = [[JBBarChartView alloc] init];
-    barChartView.delegate = self;
     barChartView.dataSource = self;
+    barChartView.delegate = self;
     [self addSubview:barChartView];
     
 At a minimum, you need to inform the data source how many bars are in the chart:
@@ -79,14 +95,16 @@ Lastly, ensure you have set the *frame* of your barChartView & call *reloadData*
 
 	barChartView.frame = CGRectMake( ... );
 	[barChartView reloadData];
+	
+**Note**: subsequent changes to the chart's frame will not invoke *reloadData*; it must be called directly afterwards for any changes to take effect. 
     
 #### JBLineChartView
 
 Similiarily, to initialize a JBLineChartView, you only need a few lines of code (see below). Line charts can also be initialized via a <b>nib</b> or with a <b>frame</b>.
 
 	JBLineChartView *lineChartView = [[JBLineChartView alloc] init];
-    lineChartView.delegate = self;
     lineChartView.dataSource = self;
+    lineChartView.delegate = self;
     [self addSubview:lineChartView];
 
 At a minimum, you need to inform the data source how many lines and vertical data points (for each line) are in the chart:
@@ -113,6 +131,7 @@ Lastly, ensure you have set the *frame* of your lineChartView & call *reloadData
 	lineChartView.frame = CGRectMake( ... );
 	[lineChartView reloadData];
 
+**Note**: subsequent changes to the chart's frame will not invoke *reloadData*; it must be called directly afterwards for any changes to take effect. 
 	
 ## Customization
 
@@ -133,6 +152,10 @@ Lastly, any JBChartView subclass can be collapsed or expanded programmatically v
 	- (void)setState:(JBChartViewState)state animated:(BOOL)animated callback:(void (^)())callback;
 
 #### JBBarChartView
+
+A bar chart can be inverted such that it's orientation is top->down (including the selection view) by setting the following property:
+
+	@property (nonatomic, assign, getter=isInverted) BOOL inverted;
 
 By default, a chart's bars will be black and flat. They can be customized by supplying a UIView subclass through the <i>optional</i> protocol:
 
@@ -159,7 +182,7 @@ Lastly, a bar chart's selection events are delegated back via:
 		// Update view
 	}
 
-	- (void)didUnselectBarChartView:(JBBarChartView *)barChartView
+	- (void)didDeselectBarChartView:(JBBarChartView *)barChartView
 	{
 		// Update view
 	}
@@ -175,6 +198,11 @@ The color, width and style of each line in the chart can be customized via the <
 		return ...; // color of line in chart
 	}
 	
+	- (UIColor *)lineChartView:(JBLineChartView *)lineChartView fillColorForLineAtLineIndex:(NSUInteger)lineIndex
+	{
+		return ...; // color of area under line in chart
+	}
+	
 	- (CGFloat)lineChartView:(JBLineChartView *)lineChartView widthForLineAtLineIndex:(NSUInteger)lineIndex
 	{
 		return ...; // width of line in chart
@@ -187,7 +215,7 @@ The color, width and style of each line in the chart can be customized via the <
 	
 Furthermore, the color and width of the selection view along with the color of the selected line can be customized via the <i>optional</i> protocols:
 
-	- (UIColor *)verticalSelectionColorForLineChartView:(JBLineChartView *)lineChartView
+	- (UIColor *)lineChartView:(JBLineChartView *)lineChartView verticalSelectionColorForLineAtLineIndex:(NSUInteger)lineIndex
 	{
 		return ...; // color of selection view
 	}
@@ -202,13 +230,18 @@ Furthermore, the color and width of the selection view along with the color of t
 		return ...; // color of selected line
 	}
 	
+	- (UIColor *)lineChartView:(JBLineChartView *)lineChartView selectionFillColorForLineAtLineIndex:(NSUInteger)lineIndex
+	{
+		return ...; // color of area under selected line
+	}
+	
 By default, each line will not show dots for each point. To enable this on a per-line basis:
 
 	- (BOOL)lineChartView:(JBLineChartView *)lineChartView showsDotsForLineAtLineIndex:(NSUInteger)lineIndex;
 
 To customize the size of each dot (default 3x the line width), implement:
 
-	- (CGFloat)lineChartView:(JBLineChartView *)lineChartView dotRadiusForLineAtLineIndex:(NSUInteger)lineIndex;
+	- (CGFloat)lineChartView:(JBLineChartView *)lineChartView dotRadiusForDotAtHorizontalIndex:(NSUInteger)horizontalIndex atLineIndex:(NSUInteger)lineIndex;
 	
 To customize the color of each dot during selection and non-selection events (default is white and black respectively), implement:
 
@@ -216,6 +249,14 @@ To customize the color of each dot during selection and non-selection events (de
 
 	- (UIColor *)lineChartView:(JBLineChartView *)lineChartView selectionColorForDotAtHorizontalIndex:(NSUInteger)horizontalIndex atLineIndex:(NSUInteger)lineIndex;
 	
+Alternatively, you can supply your own UIView instead of using the default impelmentation:
+
+	- (UIView *)lineChartView:(JBLineChartView *)lineChartView dotViewAtHorizontalIndex:(NSUInteger)horizontalIndex atLineIndex:(NSUInteger)lineIndex;
+	
+Custom dot views are automatically shown when selected unless the following is implemented:
+
+    - (BOOL)lineChartView:(JBLineChartView *)lineChartView shouldHideDotViewOnSelectionAtHorizontalIndex:(NSUInteger)horizontalIndex atLineIndex:(NSUInteger)lineIndex;
+		
 As well, by default, each line will have squared off end caps and connection points. To enable rounded connections and end caps:
 
 	- (BOOL)lineChartView:(JBLineChartView *)lineChartView smoothLineAtLineIndex:(NSUInteger)lineIndex;
@@ -227,7 +268,7 @@ Lastly, a line chart's selection events are delegated back via:
 		// Update view
 	}
 
-	- (void)didUnselectLineInLineChartView:(JBLineChartView *)lineChartView
+	- (void)didDeselectLineInLineChartView:(JBLineChartView *)lineChartView
 	{
 		// Update view
 	}

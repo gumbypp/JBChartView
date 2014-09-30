@@ -1,5 +1,83 @@
 # Changelog
 
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.8.10">2.8.10</a>
+#### 09/22/14
+- Reverted fix for issue <a href="https://github.com/Jawbone/JBChartView/issues/111">#111</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.8.9">2.8.9</a>
+#### 09/22/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/issues/111">#111</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.8.8">2.8.8</a>
+#### 09/19/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/issues/110">#110</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.8.7">2.8.7</a>
+#### 09/08/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/issues/107">#107</a>.
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/issues/106">#106</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.8.5">2.8.5</a>
+#### 08/28/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/issues/98">#98</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.8.4">2.8.4</a>
+#### 08/27/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/issues/97">#97</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.8.3">2.8.3</a>
+#### 08/26/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/issues/93">#93</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.8.2">2.8.2</a>
+#### 08/26/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/issues/96">#96</a>.
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/issues/95">#95</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.8.1">2.8.1</a>
+#### 08/22/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/issues/92">#92</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.8.0">2.8.0</a>
+#### 08/14/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/pull/90">#90</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.7.4">2.7.4</a>
+#### 08/14/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/pull/89">#89</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.7.3">2.7.3</a>
+#### 08/07/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/pull/83">#83</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.7.2">2.7.2</a>
+#### 08/04/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/pull/78">#78</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.7.1">2.7.1</a>
+#### 08/04/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/pull/77">#77</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.7.0">2.7.0</a>
+#### 08/02/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/pull/76">#76</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.6.3">2.6.3</a>
+#### 07/31/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/pull/75">#75</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.6.2">2.6.2</a>
+#### 07/25/14
+- Added new controller (JBAreaChartViewController) to demonstrate area charts.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.6.1">2.6.1</a>
+#### 07/25/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/pull/74">#74</a>.
+
+## <a href="https://github.com/Jawbone/JBChartView/tree/v2.6.0">2.6.0</a>
+#### 07/24/14
+- Fixes issue <a href="https://github.com/Jawbone/JBChartView/pull/71">#71</a>.
+
 ## <a href="https://github.com/Jawbone/JBChartView/tree/v2.5.5">2.5.5</a>
 #### 05/13/14
 - Fixes issue <a href="https://github.com/Jawbone/JBChartView/pull/57">#57</a>.

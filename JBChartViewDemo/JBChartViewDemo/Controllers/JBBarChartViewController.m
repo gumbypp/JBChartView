@@ -18,10 +18,10 @@
 CGFloat const kJBBarChartViewControllerChartHeight = 250.0f;
 CGFloat const kJBBarChartViewControllerChartPadding = 10.0f;
 CGFloat const kJBBarChartViewControllerChartHeaderHeight = 80.0f;
-CGFloat const kJBBarChartViewControllerChartHeaderPadding = 10.0f;
+CGFloat const kJBBarChartViewControllerChartHeaderPadding = 20.0f;
 CGFloat const kJBBarChartViewControllerChartFooterHeight = 25.0f;
 CGFloat const kJBBarChartViewControllerChartFooterPadding = 5.0f;
-NSUInteger kJBBarChartViewControllerBarPadding = 1;
+CGFloat const kJBBarChartViewControllerBarPadding = 1.0f;
 NSInteger const kJBBarChartViewControllerNumBars = 12;
 NSInteger const kJBBarChartViewControllerMaxBarHeight = 10;
 NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
@@ -108,6 +108,7 @@ NSString * const kJBBarChartViewControllerNavButtonViewKey = @"view";
     self.barChartView.dataSource = self;
     self.barChartView.headerPadding = kJBBarChartViewControllerChartHeaderPadding;
     self.barChartView.minimumValue = 0.0f;
+    self.barChartView.inverted = NO;
     self.barChartView.backgroundColor = kJBColorBarChartBackground;
     
     JBChartHeaderView *headerView = [[JBChartHeaderView alloc] initWithFrame:CGRectMake(kJBBarChartViewControllerChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(kJBBarChartViewControllerChartHeaderHeight * 0.5), self.view.bounds.size.width - (kJBBarChartViewControllerChartPadding * 2), kJBBarChartViewControllerChartHeaderHeight)];
@@ -137,11 +138,16 @@ NSString * const kJBBarChartViewControllerNavButtonViewKey = @"view";
     [self.barChartView setState:JBChartViewStateExpanded];
 }
 
-#pragma mark - JBBarChartViewDelegate
+#pragma mark - JBChartViewDataSource
 
-- (CGFloat)barChartView:(JBBarChartView *)barChartView heightForBarViewAtAtIndex:(NSUInteger)index
+- (BOOL)shouldExtendSelectionViewIntoHeaderPaddingForChartView:(JBChartView *)chartView
 {
-    return [[self.chartData objectAtIndex:index] floatValue];
+    return YES;
+}
+
+- (BOOL)shouldExtendSelectionViewIntoFooterPaddingForChartView:(JBChartView *)chartView
+{
+    return NO;
 }
 
 #pragma mark - JBBarChartViewDataSource
@@ -149,21 +155,6 @@ NSString * const kJBBarChartViewControllerNavButtonViewKey = @"view";
 - (NSUInteger)numberOfBarsInBarChartView:(JBBarChartView *)barChartView
 {
     return kJBBarChartViewControllerNumBars;
-}
-
-- (NSUInteger)barPaddingForBarChartView:(JBBarChartView *)barChartView
-{
-    return kJBBarChartViewControllerBarPadding;
-}
-
-- (UIColor *)barChartView:(JBBarChartView *)barChartView colorForBarViewAtIndex:(NSUInteger)index
-{
-    return (index % 2 == 0) ? kJBColorBarChartBarBlue : kJBColorBarChartBarGreen;
-}
-
-- (UIColor *)barSelectionColorForBarChartView:(JBBarChartView *)barChartView
-{
-    return [UIColor whiteColor];
 }
 
 - (void)barChartView:(JBBarChartView *)barChartView didSelectBarAtIndex:(NSUInteger)index touchPoint:(CGPoint)touchPoint
@@ -176,10 +167,32 @@ NSString * const kJBBarChartViewControllerNavButtonViewKey = @"view";
     [self.tooltipView setText:[[self.monthlySymbols objectAtIndex:index] uppercaseString]];
 }
 
-- (void)didUnselectBarChartView:(JBBarChartView *)barChartView
+- (void)didDeselectBarChartView:(JBBarChartView *)barChartView
 {
     [self.informationView setHidden:YES animated:YES];
     [self setTooltipVisible:NO animated:YES];
+}
+
+#pragma mark - JBBarChartViewDelegate
+
+- (CGFloat)barChartView:(JBBarChartView *)barChartView heightForBarViewAtIndex:(NSUInteger)index
+{
+    return [[self.chartData objectAtIndex:index] floatValue];
+}
+
+- (UIColor *)barChartView:(JBBarChartView *)barChartView colorForBarViewAtIndex:(NSUInteger)index
+{
+    return (index % 2 == 0) ? kJBColorBarChartBarBlue : kJBColorBarChartBarGreen;
+}
+
+- (UIColor *)barSelectionColorForBarChartView:(JBBarChartView *)barChartView
+{
+    return [UIColor whiteColor];
+}
+
+- (CGFloat)barPaddingForBarChartView:(JBBarChartView *)barChartView
+{
+    return kJBBarChartViewControllerBarPadding;
 }
 
 #pragma mark - Buttons
